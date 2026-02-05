@@ -53,13 +53,13 @@ export default class Tree {
     rec(this.root);
   }
 
-  isCallback(cb) {
+  isCb(cb) {
     if (typeof cb !== 'function') throw new Error('Callback is required');
   }
 
   levelOrderForEach(cb) {
     // Using iteration
-    this.isCallback();
+    this.isCb();
     if (!this.root) return;
 
     const queue = [this.root];
@@ -75,7 +75,7 @@ export default class Tree {
   }
 
   levelOrderForEachRec(cb) {
-    this.isCallback();
+    this.isCb();
 
     if (!this.root) return;
 
@@ -94,7 +94,7 @@ export default class Tree {
   }
 
   inOrderForEach(cb) {
-    this.isCallback(cb);
+    this.isCb(cb);
     if (!this.root) return;
 
     const rec = (root) => {
@@ -107,7 +107,7 @@ export default class Tree {
   }
 
   preOrderForEach(cb) {
-    this.isCallback(cb);
+    this.isCb(cb);
     if (!this.root) return;
 
     const rec = (root) => {
@@ -120,7 +120,7 @@ export default class Tree {
   }
 
   postOrderForEach(cb) {
-    this.isCallback(cb);
+    this.isCb(cb);
     if (!this.root) return;
 
     const rec = (root) => {
@@ -130,6 +130,36 @@ export default class Tree {
     };
 
     rec(this.root);
+  }
+
+  getHeights(root, hgt = -1, heights = []) {
+    hgt++;
+    if (root.left) {
+      this.getHeights(root.left, hgt, heights);
+    }
+    if (root.right) {
+      this.getHeights(root.right, hgt, heights);
+    }
+    if (!root.left || !root.right) heights.push(hgt);
+    return heights;
+  }
+
+  height(value) {
+    let height;
+    const rec = (root) => {
+      if (root.data === value) {
+        const heights = this.getHeights(root);
+        height = heights.toSorted((cur, next) => next - cur)[0];
+        return 
+      }
+
+      if (root.left) rec(root.left);
+      if (root.right) rec(root.right);
+    };
+
+    rec(this.root);
+
+    return height;
   }
 
   prettyPrint(node, prefix = '', isLeft = true) {
@@ -142,8 +172,3 @@ export default class Tree {
     this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
   }
 }
-
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-
-tree.prettyPrint(tree.root);
-tree.postOrderForEach((data) => console.log(data));
