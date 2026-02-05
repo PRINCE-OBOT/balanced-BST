@@ -2,6 +2,7 @@
   "name": "Balance Binary Search Tree",
   "version": "1.0.0",
   "description": "Balance Binary Search Tree Project",
+  "type":"module",
   "lint-staged": {
     "src/**/*.js": [
       "eslint --fix",
