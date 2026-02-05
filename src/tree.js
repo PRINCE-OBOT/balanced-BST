@@ -106,6 +106,32 @@ export default class Tree {
     rec(this.root);
   }
 
+  preOrderForEach(cb) {
+    this.isCallback(cb);
+    if (!this.root) return;
+
+    const rec = (root) => {
+      cb(root.data);
+      if (root.left) rec(root.left);
+      if (root.right) rec(root.right);
+    };
+
+    rec(this.root);
+  }
+
+  postOrderForEach(cb) {
+    this.isCallback(cb);
+    if (!this.root) return;
+
+    const rec = (root) => {
+      if (root.left) rec(root.left);
+      if (root.right) rec(root.right);
+      cb(root.data);
+    };
+
+    rec(this.root);
+  }
+
   prettyPrint(node, prefix = '', isLeft = true) {
     if (node === null || node === undefined) {
       return;
@@ -120,4 +146,4 @@ export default class Tree {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 tree.prettyPrint(tree.root);
-tree.inOrderForEach((data) => console.log(data));
+tree.postOrderForEach((data) => console.log(data));
