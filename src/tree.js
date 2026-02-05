@@ -3,18 +3,18 @@ import Node from './node.js';
 export default class Tree {
   constructor(arr) {
     this.sortedArr = [...new Set(arr)].sort((cur, next) => cur - next);
-    this.root = this.buildTree(this.sortedArr, 0, this.sortedArr.length - 1);
+    this.root = this.#buildTree(this.sortedArr, 0, this.sortedArr.length - 1);
   }
 
-  buildTree(sortedArr, start, end) {
+  #buildTree(sortedArr, start, end) {
     if (start > end) return null;
 
     const mid = Math.floor((start + end) / 2);
 
     const root = new Node(sortedArr[mid]);
 
-    root.left = this.buildTree(sortedArr, start, mid - 1);
-    root.right = this.buildTree(sortedArr, mid + 1, end);
+    root.left = this.#buildTree(sortedArr, start, mid - 1);
+    root.right = this.#buildTree(sortedArr, mid + 1, end);
 
     return root;
   }
@@ -34,6 +34,25 @@ export default class Tree {
     return rec(this.root);
   }
 
+  insert(value) {
+    if (!this.root) this.root = new Node(value);
+
+    const rec = (root) => {
+      if (root === null) return;
+      if (value === root.data) return;
+
+      if (value < root.data) {
+        if (root.left === null) root.left = new Node(value);
+        else rec(root.left);
+      } else {
+        if (root.right === null) root.right = new Node(value);
+        else rec(root.right);
+      }
+    };
+
+    rec(this.root);
+  }
+
   prettyPrint(node, prefix = '', isLeft = true) {
     if (node === null || node === undefined) {
       return;
@@ -45,10 +64,7 @@ export default class Tree {
   }
 }
 
-const tree = new Tree([2, 3, 9, 5]);
-console.log(tree.includes(2));
-console.log(tree.includes(3));
-console.log(tree.includes(5));
-console.log(tree.includes(10));
-
+const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// console.log(tree.includes(6345))
+tree.insert(24)
 tree.prettyPrint(tree.root);
