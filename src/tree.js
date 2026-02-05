@@ -53,6 +53,42 @@ export default class Tree {
     rec(this.root);
   }
 
+  levelOrderForEach(cb) {
+    // Using iteration
+    if (typeof cb !== 'function') throw new Error('Callback is required');
+    if (!this.root) return;
+
+    const queue = [this.root];
+
+    while (queue.length !== 0) {
+      const root = queue.shift();
+
+      cb(root.data);
+
+      if (root.left !== null) queue.push(root.left);
+      if (root.right !== null) queue.push(root.right);
+    }
+  }
+
+  levelOrderForEachRec(cb) {
+    // Using iteration
+    if (typeof cb !== 'function') throw new Error('Callback is required');
+    if (!this.root) return;
+
+    const rec = (queue) => {
+      const root = queue.shift();
+
+      cb(root.data);
+
+      if (root.left !== null) queue.push(root.left);
+      if (root.right !== null) queue.push(root.right);
+
+      if (queue.length !== 0) rec(queue);
+    };
+
+    rec([this.root]);
+  }
+
   prettyPrint(node, prefix = '', isLeft = true) {
     if (node === null || node === undefined) {
       return;
@@ -65,6 +101,6 @@ export default class Tree {
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-// console.log(tree.includes(6345))
-tree.insert(24)
+
 tree.prettyPrint(tree.root);
+tree.levelOrderForEachRec((data) => console.log(data));
