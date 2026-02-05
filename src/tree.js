@@ -19,17 +19,36 @@ export default class Tree {
     return root;
   }
 
-  prettyPrint(node, prefix = '', isLeft = true){
-     if (node === null || node === undefined) {
-       return;
-     }
+  includes(value) {
+    if (!this.root) return false;
 
-     this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-     console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-     this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-   }
+    const rec = (root) => {
+      if (root === null) return;
+      if (root.data === value) return true;
+
+      if (rec(root.left) || rec(root.right)) return true;
+
+      return false;
+    };
+
+    return rec(this.root);
+  }
+
+  prettyPrint(node, prefix = '', isLeft = true) {
+    if (node === null || node === undefined) {
+      return;
+    }
+
+    this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
 }
 
-const tree = new Tree([2, 3, 9, 5])
+const tree = new Tree([2, 3, 9, 5]);
+console.log(tree.includes(2));
+console.log(tree.includes(3));
+console.log(tree.includes(5));
+console.log(tree.includes(10));
 
-tree.prettyPrint(tree.root)
+tree.prettyPrint(tree.root);
