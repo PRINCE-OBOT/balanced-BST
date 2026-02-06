@@ -102,7 +102,7 @@ export default class Tree {
     }
 
     const rec = (root) => {
-      if (!root) return;
+      if (!root) return null;
 
       if (root.left) {
         if (root.left.data === value) {
@@ -117,10 +117,30 @@ export default class Tree {
         }
       }
 
-      rec(root.left);
+      const left = rec(root.left);
+
+      if (left !== null) return;
+
       rec(root.right);
     };
     rec(this.root);
+  }
+
+  depth(value) {
+    if (!this.root) return undefined;
+
+    const rec = (root, dep = 0) => {
+      if (!root) return;
+
+      if (root.data === value) return dep + 1;
+
+      const left = rec(root.left, dep + 1);
+
+      if (left !== undefined) return left;
+
+      return rec(root.right, dep + 1);
+    };
+    return rec(this.root);
   }
 
   isCb(cb) {
