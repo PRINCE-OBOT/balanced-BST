@@ -53,6 +53,76 @@ export default class Tree {
     rec(this.root);
   }
 
+  delete(delRoot, root, dir) {
+    if (!delRoot.left && !delRoot.right) {
+      root[dir] = null;
+    } else if (!delRoot.left && delRoot.right) {
+      root[dir] = delRoot.right;
+    } else if (delRoot.left && !delRoot.right) {
+      root[dir] = delRoot.left;
+    } else {
+      const left = delRoot.left;
+
+      if (!delRoot.right.left) {
+        const right = delRoot.right;
+        right.left = left;
+
+        root[dir] = right;
+      } else {
+        let prev = delRoot.right;
+        let cur = delRoot.right.left;
+
+        let rootLeft;
+        while (!rootLeft) {
+          if (!cur.left) {
+            rootLeft = cur;
+            prev.left = null;
+          } else {
+            prev = cur;
+            cur = cur.left;
+          }
+        }
+
+        rootLeft.left = left;
+        rootLeft.right = delRoot.right;
+
+        root[dir] = rootLeft;
+      }
+    }
+  }
+
+  deleteItem(value) {
+    if (!this.root) {
+      return;
+    } else {
+      if (this.root.data === value) {
+        this.root = null;
+        return;
+      }
+    }
+
+    const rec = (root) => {
+      if (!root) return;
+
+      if (root.left) {
+        if (root.left.data === value) {
+          this.delete(root.left, root, 'left');
+          return;
+        }
+      }
+      if (root.right) {
+        if (root.right.data === value) {
+          this.delete(root.right, root, 'right');
+          return;
+        }
+      }
+
+      rec(root.left);
+      rec(root.right);
+    };
+    rec(this.root);
+  }
+
   isCb(cb) {
     if (typeof cb !== 'function') throw new Error('Callback is required');
   }
@@ -150,7 +220,7 @@ export default class Tree {
       if (root.data === value) {
         const heights = this.getHeights(root);
         height = heights.toSorted((cur, next) => next - cur)[0];
-        return 
+        return;
       }
 
       if (root.left) rec(root.left);
