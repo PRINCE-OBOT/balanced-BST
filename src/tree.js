@@ -168,6 +168,12 @@ export default class Tree {
     return rec(this.root) === false ? false : true;
   }
 
+  rebalance() {
+    const arr = [];
+    this.inOrderForEach((data) => arr.push(data));
+    this.root = this.#buildTree(arr, 0, arr.length-1);
+  }
+
   isCb(cb) {
     if (typeof cb !== 'function') throw new Error('Callback is required');
   }
