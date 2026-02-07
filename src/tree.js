@@ -1,8 +1,6 @@
 import Node from './node.js';
 
 export default class Tree {
-  sortedArrLen
-
   constructor(arr) {
     this.sortedArr = this.sortArr(arr);
     this.root = this.#buildTree(this.sortedArr, 0, this.sortedArr.length - 1);
