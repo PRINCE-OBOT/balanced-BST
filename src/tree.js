@@ -143,6 +143,31 @@ export default class Tree {
     return rec(this.root);
   }
 
+  isBalance() {
+    if (!this.root) return false;
+
+    const rec = (root, dep = 0, deps = []) => {
+      if (root === null) {
+        if (!deps.includes(dep)) {
+          deps.push(dep);
+        }
+
+        const sortedDeps = deps.toSorted((cur, next) => cur - next);
+        if (deps.length >= 2) {
+          if (sortedDeps[sortedDeps.length - 1] - sortedDeps[0] >= 2) return false;
+          return;
+        } else return;
+      }
+
+      const left = rec(root.left, dep + 1, deps);
+
+      if (left === false) return left;
+
+      return rec(root.right, dep + 1, deps);
+    };
+    return rec(this.root) === false ? false : true;
+  }
+
   isCb(cb) {
     if (typeof cb !== 'function') throw new Error('Callback is required');
   }
