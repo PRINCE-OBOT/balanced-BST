@@ -1,8 +1,10 @@
 import Node from './node.js';
 
 export default class Tree {
+  sortedArrLen
+
   constructor(arr) {
-    this.sortedArr = [...new Set(arr)].sort((cur, next) => cur - next);
+    this.sortedArr = this.sortArr(arr);
     this.root = this.#buildTree(this.sortedArr, 0, this.sortedArr.length - 1);
   }
 
@@ -17,6 +19,12 @@ export default class Tree {
     root.right = this.#buildTree(sortedArr, mid + 1, end);
 
     return root;
+  }
+
+  sortArr(arr) {
+    this.sortedArr = [...new Set(arr)].sort((cur, next) => cur - next);
+    this.sortedArrLen = this.sortedArr.length
+    return this.sortedArr
   }
 
   includes(value) {
@@ -171,7 +179,7 @@ export default class Tree {
   rebalance() {
     const arr = [];
     this.inOrderForEach((data) => arr.push(data));
-    this.root = this.#buildTree(arr, 0, arr.length-1);
+    this.root = this.#buildTree(arr, 0, arr.length - 1);
   }
 
   isCb(cb) {
