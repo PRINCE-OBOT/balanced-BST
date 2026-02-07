@@ -43,6 +43,8 @@ export default class Tree {
   }
 
   insert(value) {
+    if(value === undefined) return
+
     if (!this.root) this.root = new Node(value);
 
     const rec = (root) => {

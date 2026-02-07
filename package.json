@@ -1,6 +1,7 @@
 {
   "name": "Balance Binary Search Tree",
   "version": "1.0.0",
+  "type": "module",
   "description": "Balance Binary Search Tree Project",
   "lint-staged": {
     "src/**/*.js": [
